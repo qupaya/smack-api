@@ -1,0 +1,204 @@
+swagger: "2.0"
+info:
+  description: "Smack API for qupaya bootcamps."
+  version: 1.0.0
+  title: Smack API
+tags:
+  - name: channels
+    description: Everything channel and message related.
+  - name: user
+    description: User information
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /channels:
+    get:
+      tags:
+        - channels
+      summary: List all channels
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Channel"
+    post:
+      tags:
+        - channels
+      summary: Add new channel
+      parameters:
+        - in: body
+          name: body
+          description: Channel object that needs to be added to the store
+          required: true
+          schema:
+            $ref: "#/definitions/NewChannel"
+      responses:
+        "201":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Channel"
+  "/channels/{channelId}":
+    parameters:
+        - name: channelId
+          in: path
+          description: ID of channel to return
+          required: true
+          type: integer
+    get:
+      tags:
+        - channels
+      summary: Get channel information
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Channel"
+        "404":
+          description: Not found
+    patch:
+      tags:
+          - channels
+      summary: Update channel information
+      parameters:
+        - in: body
+          name: body
+          description: Channel object with changes
+          required: true
+          schema:
+            $ref: "#/definitions/PatchedChannel"
+      responses:
+        "200":
+            description: successful operation
+            schema:
+              $ref: "#/definitions/Channel"
+    delete:
+      tags:
+        - channels
+      summary: Delete channel and all its messages
+      responses:
+        "200":
+          description: successful operation
+        "404":
+          description: Not found
+  "/channels/{channelId}/messages":
+    parameters:
+        - name: channelId
+          in: path
+          description: ID of channel to return
+          required: true
+          type: integer
+    get:
+      tags:
+        - channels
+      summary: Get all messages in a channel
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Message"
+        "404":
+          description: Not found
+  /messages:
+    get:
+      tags:
+        - channels
+      summary: Get all messages of all channels
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Message"
+    post:
+      tags:
+        - channels
+      summary: Add new message
+      parameters:
+        - in: body
+          name: body
+          description: Message object that needs to be added to the store
+          required: true
+          schema:
+            $ref: "#/definitions/NewMessage"
+      responses:
+        "201":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Channel"
+  "/messages/{messageId}":
+    parameters:
+        - name: messageId
+          in: path
+          description: ID of message to delete
+          required: true
+          type: integer
+    delete:
+      tags:
+        - channels
+      summary: Delete message
+      responses:
+        "200":
+          description: successful operation
+        "404":
+          description: Not found
+
+
+definitions:
+  PatchedChannel:
+    properties:
+      name:
+        example: "town hall"
+        type: string
+
+  NewChannel:
+    allOf:
+        - $ref: '#/definitions/PatchedChannel'
+    required:
+      - name
+
+  Channel:
+    allOf:
+      - $ref: '#/definitions/PatchedChannel'
+      - properties:
+          id:
+            example: 1
+            type: integer
+    required:
+      - id
+      - name
+
+  NewMessage:
+    properties:
+      channelId:
+        example: 1
+        type: integer
+      text:
+        example: "hi there 👋️"
+        type: string
+      author:
+        example: "Homer Simpson"
+        type: string
+    required:
+      - channelId
+      - text
+      - author
+
+  Message:
+    allOf:
+      - $ref: '#/definitions/NewMessage'
+      - properties:
+          id:
+            example: 1
+            type: integer
+    required:
+      - id

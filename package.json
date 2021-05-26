@@ -1,0 +1,33 @@
+{
+  "name": "@qupaya/smack-api",
+  "version": "1.0.0",
+  "description": "Simple example api for qupaya bootcamps.",
+  "license": "MIT",
+  "keywords": [
+    "qupaya",
+    "bootqamp",
+    "bootcamp",
+    "workshop",
+    "example",
+    "api"
+  ],
+  "author": "Markus Ende",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qupaya/smack-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qupaya/smack-api/issues"
+  },
+  "homepage": "https://github.com/qupaya/smack-api#readme",
+  "bin": {
+    "smack-api": "server.js"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server"
+  },
+  "dependencies": {
+    "json-server": "^0.16.3"
+  }
+}
